@@ -1,10 +1,10 @@
 SidekiqActiveRecordShard.configure do
   self.selected_shard = -> do
     case Current.tenant_id
-    when "company1"
-      :company1
+    when "other"
+      :other
     else
-      :default
+      :primary
     end
   end
 end

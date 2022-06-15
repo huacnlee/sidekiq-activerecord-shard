@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = SidekiqActiveRecordShard::VERSION
   spec.authors = ["Jason Lee"]
   spec.email = ["huacnlee@gmail.com"]
-  spec.homepage = "https://github.com/huacnlee/sidekiq-activerecord-shard-middleware"
+  spec.homepage = "https://github.com/huacnlee/sidekiq-activerecord-shard"
   spec.summary = "Add ActiveRecord Shard supports for Sidekiq."
   spec.description = "A Sidekiq middleware for supports ActiveRecord Shard."
   spec.license = "MIT"
