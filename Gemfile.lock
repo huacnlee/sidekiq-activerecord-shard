@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     sidekiq-activerecord-shard (0.1.0)
-      rails (>= 7.0.2.3)
+      rails (>= 7)
       sidekiq (>= 6)
 
 GEM

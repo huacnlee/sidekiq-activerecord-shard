@@ -18,5 +18,7 @@ module Dummy
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.active_record.shard_selector = {lock: true}
+    config.active_record.shard_resolver = ->(request) { TenantShard.shard_resolver(request) }
   end
 end

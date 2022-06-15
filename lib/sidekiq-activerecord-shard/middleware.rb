@@ -5,7 +5,8 @@ module SidekiqActiveRecordShard
     include ::Sidekiq::ClientMiddleware
 
     def call(_jobclass, job, _queue, _redis)
-      job["_active_record_shared"] ||= SidekiqActiveRecordShard.selected_shard.call
+      # Store shard value in Job arguments
+      job["_active_record_shard"] = SidekiqActiveRecordShard.selected_shard.call
       yield
     end
   end
@@ -13,12 +14,16 @@ module SidekiqActiveRecordShard
   class Server
     include Sidekiq::ServerMiddleware
     def call(_jobclass, job, _queue, &block)
-      set_shard(job["_active_record_shared"], &block)
+      set_shard(job["_active_record_shard"], &block)
     end
 
+    # Inspired by ActiveRecord::Middleware::ShardSelector
+    # https://github.com/rails/rails/blob/v7.0.3/activerecord/lib/active_record/middleware/shard_selector.rb#L54
     def set_shard(shared, &block)
+      options = Rails.application.config.active_record.shard_selector
+
       ActiveRecord::Base.connected_to(shard: shard.to_sym) do
-        ActiveRecord::Base.prohibit_shard_swapping(true, &block)
+        ActiveRecord::Base.prohibit_shard_swapping(options.fetch(:lock, true), &block)
       end
     end
   end
