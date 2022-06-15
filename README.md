@@ -58,7 +58,7 @@ end
 
 Some times, you want to perform a job without Request context, or start Job in schedulers.
 
-Now use can use `set(shard: "hard_name")` to set shared in directly.
+Now use can use `set(shard: "shard_name")` to set shared in directly.
 
 ```rb
 # Call job with "other" shard db
