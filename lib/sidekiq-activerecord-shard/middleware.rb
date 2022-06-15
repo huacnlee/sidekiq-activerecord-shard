@@ -2,7 +2,7 @@ require "sidekiq"
 
 module SidekiqActiveRecordShard
   class Client
-    include ::Sidekiq::ClientMiddleware
+    include Sidekiq::ClientMiddleware
 
     def call(_jobclass, job, _queue, _redis)
       # Store shard value in Job arguments
