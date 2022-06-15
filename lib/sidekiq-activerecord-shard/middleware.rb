@@ -19,7 +19,7 @@ module SidekiqActiveRecordShard
 
     # Inspired by ActiveRecord::Middleware::ShardSelector
     # https://github.com/rails/rails/blob/v7.0.3/activerecord/lib/active_record/middleware/shard_selector.rb#L54
-    def set_shard(shared, &block)
+    def set_shard(shard, &block)
       options = Rails.application.config.active_record.shard_selector
 
       ActiveRecord::Base.connected_to(shard: shard.to_sym) do

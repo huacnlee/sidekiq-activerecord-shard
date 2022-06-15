@@ -1,0 +1,27 @@
+name: build
+on: push
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ruby: 3.0.0
+            gemfile: Gemfile
+            postgres: 10
+    env:
+      RAILS_ENV: true
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - uses: ankane/setup-postgres@v1
+        with:
+          postgres-version: ${{ matrix.postgres }}
+      - run: rails db:create && rails db:migrate
+      - run: rails test

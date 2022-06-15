@@ -3,6 +3,6 @@ class AsyncPostWorker
 
   def perform(post_id)
     post = Post.find(post_id)
-    post.update(title: "Update Title in Sidekiq tenant: #{Current.tenant_id}")
+    post.update(title: "Update Title in Sidekiq tenant: #{Current.tenant_id}, database: #{Post.connection.current_database}")
   end
 end
