@@ -6,12 +6,8 @@ module SidekiqActiveRecordShard
 
     def call(_jobclass, job, _queue, _redis)
       # Store shard value in Job arguments
-      shard = SidekiqActiveRecordShard.config.selected_shard.call
-      if shard.nil?
-        raise "No shard selected, SidekiqActiveRecordShard.config.selected_shard return nil."
-      end
+      job["shard"] ||= SidekiqActiveRecordShard.config.selected_shard.call
 
-      job["_active_record_shard"] = shard
       yield
     end
   end
@@ -19,7 +15,11 @@ module SidekiqActiveRecordShard
   class Server
     include Sidekiq::ServerMiddleware
     def call(_jobclass, job, _queue, &block)
-      set_shard(job["_active_record_shard"], &block)
+      if job["shard"].nil?
+        yield
+      else
+        set_shard(job["shard"], &block)
+      end
     end
 
     # Inspired by ActiveRecord::Middleware::ShardSelector

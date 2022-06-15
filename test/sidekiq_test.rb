@@ -31,4 +31,18 @@ class SidekiqTest < ActionDispatch::IntegrationTest
     end
     assert_equal "Update Title in Sidekiq tenant: other, database: dummy_other_test", post.title
   end
+
+  test "perform with set _active_record_shard" do
+    post = nil
+    ActiveRecord::Base.connected_to(shard: :other) do
+      post = Post.create!(title: "Title")
+    end
+
+    AsyncPostWorker.set(shard: "other").perform_async(post.id)
+    ActiveRecord::Base.connected_to(shard: :other) do
+      post.reload
+    end
+
+    assert_equal "Update Title in Sidekiq tenant: , database: dummy_other_test", post.title
+  end
 end

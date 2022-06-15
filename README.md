@@ -2,6 +2,8 @@
 
 A Sidekiq middleware for supports ActiveRecord Shard with [ActiveSupport:CurrentAttribute](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html).
 
+> NOTE: This gem can work with sidekiq-cron or other schedulers, because when Schedule perform a job, it can't know the shard name.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -50,6 +52,20 @@ class ApplicationController < ActionController::Base
     Current.tenant_id = request.headers["x-tenant-id"]
   end
 end
+```
+
+### Perform Job by set shared
+
+Some times, you want to perform a job without Request context, or start Job in schedulers.
+
+Now use can use `set(shard: "hard_name")` to set shared in directly.
+
+```rb
+# Call job with "other" shard db
+MyJob.set(shard: "other").perform_later
+
+# Call job with "primary" shard db
+MyJob.set(shard: "primary").perform_later
 ```
 
 ## Contributing
