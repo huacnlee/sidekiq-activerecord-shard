@@ -12,7 +12,7 @@ jobs:
             gemfile: Gemfile
             postgres: 10
     env:
-      RAILS_ENV: true
+      RAILS_ENV: test
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     steps:
       - uses: actions/checkout@v2
@@ -23,5 +23,7 @@ jobs:
       - uses: ankane/setup-postgres@v1
         with:
           postgres-version: ${{ matrix.postgres }}
-      - run: bundle exec rails db:create && rails db:migrate
+      - run: |
+          bundle exec rails db:create 
+          bundle exec rails db:migrate
       - run: bundle exec rails test
