@@ -6,7 +6,7 @@ module SidekiqActiveRecordShard
 
     def call(_jobclass, job, _queue, _redis)
       # Store shard value in Job arguments
-      job["_active_record_shard"] = SidekiqActiveRecordShard.selected_shard.call
+      job["_active_record_shard"] = SidekiqActiveRecordShard.config.selected_shard.call
       yield
     end
   end

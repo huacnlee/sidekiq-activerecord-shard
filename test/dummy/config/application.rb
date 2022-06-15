@@ -20,5 +20,7 @@ module Dummy
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_record.shard_selector = {lock: true}
     config.active_record.shard_resolver = ->(request) { TenantShard.shard_resolver(request) }
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

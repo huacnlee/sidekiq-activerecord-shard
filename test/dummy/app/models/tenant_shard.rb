@@ -6,10 +6,10 @@ class TenantShard
 
     def shard_resolver_by_id(tenant_id)
       case tenant_id
-      when "company1"
-        :company1
+      when "other"
+        :other
       else
-        :default
+        :primary
       end
     end
   end
