@@ -12,7 +12,6 @@ development:
     database: dummy_other_dev
 
 test:
-  <<: *default
   primary:
     <<: *default
     database: dummy_primary_test
