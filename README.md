@@ -7,7 +7,7 @@ A Sidekiq middleware for supports ActiveRecord Shard with [ActiveSupport:Current
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "https://github.com/huacnlee/sidekiq-activerecord-shard"
+gem "sidekiq-activerecord-shard"
 ```
 
 And then execute:
