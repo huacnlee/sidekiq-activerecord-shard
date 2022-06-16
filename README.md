@@ -2,7 +2,8 @@
 
 A Sidekiq middleware for supports ActiveRecord Shard with [ActiveSupport:CurrentAttribute](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html).
 
-> NOTE: This gem can work with sidekiq-cron or other schedulers, because when Schedule perform a job, it can't know the shard name.
+> **Warning** 
+> This gem can work with [sidekiq-cron](https://github.com/ondrejbartas/sidekiq-cron) or other schedulers, because when Schedule perform a job, they can't know the which shard to use.
 
 ## Installation
 
