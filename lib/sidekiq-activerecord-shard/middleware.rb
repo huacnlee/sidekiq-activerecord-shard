@@ -2,7 +2,9 @@ require "sidekiq"
 
 module SidekiqActiveRecordShard
   class Client
-    include Sidekiq::ClientMiddleware
+    if Sidekiq::VERSION >= "6.5"
+      include Sidekiq::ClientMiddleware
+    end
 
     def call(_jobclass, job, _queue, _redis)
       # Store shard value in Job arguments
@@ -13,7 +15,10 @@ module SidekiqActiveRecordShard
   end
 
   class Server
-    include Sidekiq::ServerMiddleware
+    if Sidekiq::VERSION >= "6.5"
+      include Sidekiq::ServerMiddleware
+    end
+
     def call(_jobclass, job, _queue, &block)
       if job["shard"].nil?
         yield
