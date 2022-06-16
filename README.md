@@ -20,21 +20,6 @@ $ bundle
 
 ## Usage
 
-Add follow code into `config/initializers/sidekiq-activerecord-shard.rb`:
-
-```rb
-SidekiqActiveRecordShard.configure do
-  self.selected_shard = -> do
-    case Current.tenant_id
-    when "other"
-      :other
-    else
-      :primary
-    end
-  end
-end
-```
-
 Create `app/models/current.rb`:
 
 ```rb
@@ -54,6 +39,26 @@ class ApplicationController < ActionController::Base
   end
 end
 ```
+
+Add sidekiq config `config/initializers/sidekiq-activerecord-shard.rb`:
+
+```rb
+# Enable Sidekiq CurrentAttributes middleware for store Current
+require "sidekiq/middleware/current_attributes"
+Sidekiq::CurrentAttributes.persist(Current)
+
+SidekiqActiveRecordShard.configure do
+  self.selected_shard = -> do
+    case Current.tenant_id
+    when "other"
+      :other
+    else
+      :primary
+    end
+  end
+end
+```
+
 
 ### Perform Job by set shared
 
